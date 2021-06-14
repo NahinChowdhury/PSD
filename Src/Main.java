@@ -17,7 +17,6 @@ import javax.swing.text.ChangedCharSetException;
 
 import java.util.List;
 
-
 import org.graphstream.graph.*;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.file.FileSourceGPX.GPXConstants.WPTAttribute;
@@ -25,6 +24,9 @@ import org.graphstream.stream.file.FileSourceGPX.GPXConstants.WPTAttribute;
 import org.graphstream.algorithm.AStar.DistanceCosts;
 import org.graphstream.algorithm.Dijkstra;
 import net.sf.geographiclib.*;
+
+
+import static java.lang.Integer.parseInt;
 
 
 public class Main {
@@ -50,7 +52,7 @@ public class Main {
 				n.setAttribute("long", Double.parseDouble(splited[1]));			// set longitude attribute
 				n.setAttribute("lat", Double.parseDouble(splited[2]));			// set latitude attribute
 				n.setAttribute("poi", 0);										// set the node as a normal node
-				lid = Integer.parseInt(splited[0]);
+				lid = parseInt(splited[0]);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -408,7 +410,7 @@ public class Main {
 				String[] splited = line.split("\\s+");							// split based on white spaces
 				POI nPoi = new POI();
 				nPoi.items = new double[total];
-				nPoi.setvalues(Integer.parseInt(splited[0]), Double.parseDouble(splited[1]), Double.parseDouble(splited[2]), splited[3], Double.parseDouble(splited[4]));
+				nPoi.setvalues(parseInt(splited[0]), Double.parseDouble(splited[1]), Double.parseDouble(splited[2]), splited[3], Double.parseDouble(splited[4]));
 				//System.out.println(splited[3]);
 
 				Edge e = graph.getEdge(nPoi.eId);
@@ -437,7 +439,7 @@ public class Main {
 			String line;
 
 			while ((line = br.readLine()) != null) {
-				int item = Integer.parseInt(line);
+				int item = parseInt(line);
 				//System.out.println(item);
 				ItemList.add(item);
 
@@ -516,7 +518,7 @@ public class Main {
 
 					for(int j = 0; j<splited.length;j++)
 					{
-						int shp = Integer.parseInt(splited[j]);
+						int shp = parseInt(splited[j]);
 						prmt[j] =shp;
 					}
 					plist.add(prmt);
@@ -542,11 +544,11 @@ public class Main {
 
 				String[] splited = line.split("\\s+");							// split based on white spaces
 				Item itm = new Item();
-				itm.Id = Integer.parseInt(splited[0]);
+				itm.Id = parseInt(splited[0]);
 				//System.out.println(line);
 				for(int i = 1; i<splited.length;i++)
 				{
-					int shp = Integer.parseInt(splited[i]);
+					int shp = parseInt(splited[i]);
 					if(!itm.p.contains(shp))
 					{itm.p.add(shp);}
 				}
@@ -573,8 +575,8 @@ public class Main {
 
 				String[] splited = line.split("\\s+");							// split based on white spaces
 
-				int poi = Integer.parseInt(splited[0]);
-				int  itm = Integer.parseInt(splited[1]);
+				int poi = parseInt(splited[0]);
+				int  itm = parseInt(splited[1]);
 				//System.out.println(line);
 				if(itm>1000)continue;
 				//System.out.println(splited[2] + ": "+ splited[2].length());
@@ -2535,10 +2537,15 @@ public class Main {
 		Scanner myObj = new Scanner(System.in);  // Create a Scanner object
 		System.out.println("Length: ");
 
-		int len = myObj.nextInt();
+		for(int i = 0; i < arg.length; i++){
+			System.out.println(arg[i]);
+		}
+
+//		int len = myObj.nextInt();
+		int len = parseInt(arg[0]);
 		System.out.println("Experiments: ");
 
-		//int len = 10;
+//		int len = 10;
 		long startTime1 = System.currentTimeMillis();
 		Graph graph = new SingleGraph("Amsterdam");	  							// initializes the graph
 		Lid=readGraph(graph, Lid);												// generates the graph by reading the input file
@@ -2626,8 +2633,9 @@ public class Main {
 		double area=0;
 		double [] cover = {0};
 
-		//int N =1;
-		int N = myObj.nextInt();  // Read user input
+//		int N =1;
+//		int N = myObj.nextInt();  // Read user input
+		int N = parseInt(arg[1]);  // Read user input
 		double maxA=0;
 		/////////////////////////////// 100 Experiments /////////////////////////////
 		while(iteration <N) {
