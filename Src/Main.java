@@ -2535,15 +2535,20 @@ public class Main {
 		ArrayList <Item > items = new ArrayList<Item>();						// List of all the items
 
 		Scanner myObj = new Scanner(System.in);  // Create a Scanner object
-		System.out.println("Length: ");
+		//System.out.println("Length: ");
+
+		// String to output
+		String shopper_loc = "";
+		String customer_loc = "";
+		String route_str = "";
 
 		for(int i = 0; i < arg.length; i++){
-			System.out.println(arg[i]);
+//			System.out.println(arg[i]);
 		}
 
 //		int len = myObj.nextInt();
 		int len = parseInt(arg[0]);
-		System.out.println("Experiments: ");
+		//System.out.println("Experiments: ");
 
 //		int len = 10;
 		long startTime1 = System.currentTimeMillis();
@@ -2649,13 +2654,16 @@ public class Main {
 			String shopper = Integer.toString(rand_int1);
 
 			Node node = graph.getNode(shopper);
-			System.out.println("\nShopper's location: lat: " + node.getAttribute("lat") + " lng: " + node.getAttribute("long"));
+//			System.out.println("\nShopper's location: lat: " + node.getAttribute("lat") + " lng: " + node.getAttribute("long"));
+			shopper_loc = "{\"shopper_location\":{ \"lat\": " + node.getAttribute("lat") + ", \"lng\": " + node.getAttribute("long") + "}},";
+//			System.out.println("{\"shopper_location\":{ \"lat\": " + node.getAttribute("lat") + ", \"lng\": " + node.getAttribute("long") + "}}");
 
 			rand_int1 = rand.nextInt(100000);
 			shopper = Integer.toString(rand_int1);
 			Node node2 = graph.getNode(shopper);
 
-			System.out.println("Customer's location: lat: " + node2.getAttribute("lat") + " lng: " + node2.getAttribute("long") + "\n\n");
+			customer_loc = "{\"customer_location\": {\"lat\": \"" + node2.getAttribute("lat") + "\", \"lng\": \"" + node2.getAttribute("long") + "\"}},";
+//			System.out.println("{\"customer_location\": {\"lat\": \"" + node2.getAttribute("lat") + "\", \"lng\": \"" + node2.getAttribute("long") + "\"}}");
 
 
 			// Node node = graph.getNode("6900");
@@ -2726,13 +2734,19 @@ public class Main {
 			Q=LinearSkyline(Q);
 
 			// nahin code starts
-
-			System.out.println("Iteration " + iteration);
+			route_str = "{\"route\": [";
+//			System.out.println("Iteration " + iteration);
 			for(int i = 0; i < Q.size(); i++){
-				System.out.println("\n\nRoute " + i);
-				Q.get(i).print();
+//				System.out.println("\n\nRoute " + i);
+				String route_specific_str = "{\"round\": " + i + ",";
+				route_specific_str += Q.get(i).print();
+				route_str += route_specific_str + "},";
+//				System.out.println(route_specific_str);
 				continue;
 			}
+			route_str = route_str.substring(0, route_str.length() - 1);
+			route_str += "]}";
+//			System.out.println(route_str);
 			// nahin code ends
 
 
@@ -2780,7 +2794,7 @@ public class Main {
 			totaltimeB+= endTime - startTime+comT;
 
 
-			System.out.println("\n\n");
+//			System.out.println("\n\n");
 
 			//check_sequence(B);
 			//Collections.sort(B, new Comp());
@@ -2847,15 +2861,20 @@ public class Main {
 ////////////////************************************************************//////////////////////////////////
 
 
-			System.out.println(Q);
+//			System.out.println(Q);
 
 		}
 
+		String final_output = "{[" +shopper_loc + customer_loc + route_str + "]}";
+		System.out.println(shopper_loc);
+		System.out.println(customer_loc);
+		System.out.println(route_str);
+		//System.out.println(final_output);
 
-		System.out.println("APXT: "+totaltime/N);
+//		System.out.println("APXT: "+totaltime/N);
 		//System.out.println("BASET: "+totaltimeB/N);
 		//System.out.println("\n\n\n");
-		System.out.println("AREA: "+ area/N);
+//		System.out.println("AREA: "+ area/N);
 		//System.out.println("COVER: "+ cover[0]/N);
 
 		//System.out.println(pois.size());
