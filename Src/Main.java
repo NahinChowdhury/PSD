@@ -24,6 +24,9 @@ import org.graphstream.stream.file.FileSourceGPX.GPXConstants.WPTAttribute;
 import org.graphstream.algorithm.AStar.DistanceCosts;
 import org.graphstream.algorithm.Dijkstra;
 import net.sf.geographiclib.*;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 import static java.lang.Integer.parseInt;
@@ -2505,22 +2508,34 @@ public class Main {
 	}
 
 
-	public static void 	getItemList(ArrayList<Integer> ItemList, ArrayList<Item>items, int len)
+	public static void 	getItemList(ArrayList<Integer> ItemList, ArrayList<Item>items, JSONArray item_array, int len)
 	{
 		int count = 0;
-		while(count<len)
+		while(count<item_array.length())
 		{
-			Random rand = new Random();
-			int rand_int1 = rand.nextInt(items.size());
-			Item itm = items.get(rand_int1);
-			if(itm.p.size()>0 && !ItemList.contains(rand_int1))
+			//Random rand = new Random();
+			//int rand_int1 = rand.nextInt(items.size());
+			int itm_id;
+			int total_item_q = 0;
+			try {
+				itm_id = item_array.getJSONObject(count).getInt("id");
+				total_item_q += item_array.getJSONObject(count).getInt("quantity");
+//				System.out.println(itm_id +": " + total_item_q);
+			}catch(JSONException e){
+				System.out.println(e);
+				System.out.println("One item skipped cause could not extract item id");
+				continue;
+			}
+			Item itm = items.get(itm_id);
+			if(itm.p.size()>0)
 			{
-				ItemList.add(rand_int1); // nahin commenetd this
+				for(int i = 0;i < total_item_q; i++){
+					ItemList.add(itm_id);// nahin commented this
+				}
 //		    	ItemList.add(1); // nahin modified it
 //		    	ItemList.add(132); // nahin modified it
-				count++;
 			}
-
+			count++;
 		}
 	}
 
@@ -2542,9 +2557,9 @@ public class Main {
 		String customer_loc = "";
 		String route_str = "";
 
-		for(int i = 0; i < arg.length; i++){
+//		for(int i = 0; i < arg.length; i++){
 //			System.out.println(arg[i]);
-		}
+//		}
 
 //		int len = myObj.nextInt();
 		int len = parseInt(arg[0]);
@@ -2695,7 +2710,40 @@ public class Main {
 
 
 			//readShoppingList(itemList, "./datasets/Amsterdam/poi/originals/ShoppingList_20.txt");
-			getItemList(ItemList, items,  len);
+//			String item_input = "[{\"id\": 20, \"name\": \"TropicanaS\", \"catgeory\": \"Juice\", \"quantity\": 5},{\"id\": 1, \"name\": \"Tropicana\", \"catgeory\": \"Juice\", \"quantity\": 1},{\"id\": 1, \"name\": \"Tropicana\", \"catgeory\": \"Juice\", \"quantity\": 1}, {\"id\": 2, \"name\": \"Eggs\", \"catgeory\": \"Dairy\", \"quantity\": 12}]";
+			String item_input = arg[2];
+			// need to change item_input to arg[2] and pass it to getItemList function
+			JSONArray item_array = new JSONArray();
+			try{
+				item_array = new JSONArray(item_input);
+//				System.out.println(item_arrays.getJSONObject(1));
+			}catch(JSONException e){
+				System.out.println(e);
+			}
+//			System.out.println(item_array.length());
+
+//			try {
+//				System.out.println(item_array.getJSONObject(1).getString("name"));
+//			}catch(JSONException e){
+//				System.out.println(e);
+//			}
+
+			// counting total items ordered
+			int total_item_q = 0;
+			for(int i = 0; i < item_array.length(); i++){
+				try {
+					total_item_q += item_array.getJSONObject(i).getInt("quantity");
+				}catch(JSONException e){
+					System.out.println(e);
+					System.out.println("One item skipped cause could not extract item id");
+					continue;
+				}
+			}
+
+//			System.out.println(total_item_q);
+
+
+			getItemList(ItemList, items, item_array, len);
 			//ItemList = new ArrayList<Integer>(itemList.subList(0, len));
 			ArrayList<Integer> itemList = new ArrayList<Integer>(ItemList);
 			//itemList = ItemList.;
