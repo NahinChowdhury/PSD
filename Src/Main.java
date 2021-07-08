@@ -2556,7 +2556,8 @@ public class Main {
 		String shopper_loc = "";
 		String customer_loc = "";
 		String route_str = "";
-
+		String selected_poi_info = "";
+		String item_poi_info = "";
 //		for(int i = 0; i < arg.length; i++){
 //			System.out.println(arg[i]);
 //		}
@@ -2595,6 +2596,51 @@ public class Main {
 		//randomizeItem(pois, items, maxCost);
 		//normalizeItem(pois, items, maxCost);
 
+		item_poi_info += "{\"item_poi\":[";
+
+		for(int j = 0; j < items.toArray().length; j++){
+			Item item = items.get(j);
+//			System.out.println("\n\nItem ID: " + item.Id);
+			String item_info = "{\"id\":\"" + item.Id + "\", \"pois\": [";
+			for(int k = 0; k < item.p.toArray().length; k++){
+				int shopID = item.p.get(k);
+				item_info += "\"" + shopID + "\"";
+				if(k != item.p.toArray().length - 1){
+					item_info += ",";
+				}
+//				System.out.println("	Shop ID: " + shopID );
+			}
+			item_info += "]}";
+			if(j != items.toArray().length - 1){
+				item_info += ",";
+			}
+			item_poi_info += item_info;
+		}
+
+		item_poi_info += "]}";
+//		System.out.println(item_poi_info);
+
+		int c = 1;
+		selected_poi_info = "{\"selected_poi\":[";
+		for(int i = 0; i < pois.toArray().length; i++){
+			POI poi = pois.get(i);
+			if(poi.inactive == 0){
+				String poi_str = "{\"id\": \"" + poi.ID + "\", \"eID\": \"" + poi.eId + "\", \"lat\": \"" + poi.latitude + "\", \"lng\": \"" + poi.longitude + "\"},";
+//				System.out.println(c + ": " +poi.ID);
+//				c++;
+//				System.out.println(poi.ID + ": " + poi.items.length );
+//				for(int j = 0; j < poi.items.length; i++){
+////					Item item =
+//					System.out.println(poi.items[j].Id);
+//
+//				}
+//				System.out.println("\n\n");
+				selected_poi_info += poi_str;
+			}
+		}
+		selected_poi_info = selected_poi_info.substring(0, selected_poi_info.length() - 1);
+		selected_poi_info += "]}";
+//		System.out.println(selected_poi_info);
 
 		double [][] sp = new double [pois.size()][pois.size()] ;				// 2d array to store shortest path length among the POIs
 
@@ -2917,6 +2963,8 @@ public class Main {
 		System.out.println(shopper_loc);
 		System.out.println(customer_loc);
 		System.out.println(route_str);
+		System.out.println(selected_poi_info);
+		System.out.println(item_poi_info);
 		//System.out.println(final_output);
 
 //		System.out.println("APXT: "+totaltime/N);
