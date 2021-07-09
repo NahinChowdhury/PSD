@@ -565,7 +565,31 @@ public class Main {
 	}
 
 
+	public static void readItemNames(ArrayList<Item>items, String name)
+	{
+		//"./datasets/Amsterdam/poi/originals/StoresPerItemAMS.txt"
 
+		try (BufferedReader br = new BufferedReader(new FileReader(name))) {
+
+			String line;
+			int counter = 0;
+//			while ((line = br.readLine()) != null) {
+			// counter < 1000 because we only have 1000 items
+			while (counter < 1000) {
+				line = br.readLine();
+//				String[] splited = line.split("\\s+");							// split based on white spaces
+//				items.get(counter).name = splited[0];
+				items.get(counter).name = line;
+
+//				System.out.println("Item id: " + items.get(counter).Id + ", Item name: " + items.get(counter).name);
+				counter++;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 
 	public static void readStoreItems(ArrayList<POI> pois, String name)
 	{
@@ -2580,6 +2604,8 @@ public class Main {
 
 		//readItems(items,"./datasets/Amsterdam/poi/originals/Store_Cardinality/StoresPerItemAMS_SC50.txt");
 
+		readItemNames(items, "./datasets/itemNames/item_dataset.txt");
+
 		readPoi(pois, items.size(), graph, "./datasets/Amsterdam/poi/originals/PoiAMS50.txt");										// Reads all the POI information from input file
 		//readPoi(pois, items.size(), graph, "./datasets/Amsterdam/poi/originals/PoiAMSX.txt");										// Reads all the POI information from input file
 		//System.out.println("Hello");
@@ -2928,7 +2954,7 @@ public class Main {
 			if(ItemListFinal.contains(item.Id)) {
 
 	//			System.out.println("\n\nItem ID: " + item.Id);
-				String item_info = "{\"id\":\"" + item.Id + "\", \"name\":" + "\"item.name\"," + "\"pois\": [";
+				String item_info = "{\"id\":\"" + item.Id + "\", \"name\": \"" + item.name + "\", \"pois\": [";
 				for (int k = 0; k < item.p.toArray().length; k++) {
 					int shopID = item.p.get(k);
 					item_info += "\"" + shopID + "\"";
