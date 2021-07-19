@@ -492,7 +492,8 @@ public class Main {
 		{
 			for (int j=0; j<len;j++)
 				//sp[k][j] = Math.round((sp[k][j]/maxd) * 100.0) / 100.0;;
-				sp[k][j] = precision(sp[k][j]/maxd);
+//				sp[k][j] = precision(sp[k][j]/maxd);
+				sp[k][j] = precision(sp[k][j]);
 		}
 		return maxd;
 	}
@@ -691,8 +692,10 @@ public class Main {
 //			}
 //			if (d1<d2) wareDist[j]=	Math.round((d1/maxd) * 100.0) / 100.0;
 //			else wareDist[j]=Math.round((d2/maxd) * 100.0) / 100.0;
-			if (d1<d2) wareDist[j]=	precision(d1/maxd);
-			else wareDist[j]=precision(d2/maxd);
+//			if (d1<d2) wareDist[j]=	precision(d1/maxd);
+			if (d1<d2) wareDist[j]=	precision(d1);
+//			else wareDist[j]= precision(d2/maxd);
+			else wareDist[j]= precision(d2);
 
 		}
 
@@ -1229,7 +1232,7 @@ public class Main {
 						//droute.items.subList(droute.idx, droute.items.size()-1).clear();
 						//route.print();
 						//droute.print();
-						for (int i = droute.items.size()-1; i>= droute.idx; i--)
+						for (int i = droute.items.size()-1; i >= droute.idx; i--)
 						{
 							droute.items.remove(i);
 						}
@@ -2095,8 +2098,8 @@ public class Main {
 	{
 
 		ArrayList<Route> Result = new ArrayList<Route>();
-		int it =0;
-		int prev =-1;
+		int it = 0;
+		int prev = -1;
 
 		if(cluster.level==0)
 		{
@@ -2154,9 +2157,11 @@ public class Main {
 
 					}
 					if (cluster.level==1)
-						distance[i]=(wareTC[i] + C_TC[i])/rdist;
+//						distance[i]=(wareTC[i] + C_TC[i])/rdist;
+						distance[i]=(wareTC[i] + C_TC[i]);
 					else if(it != 0)
-						distance[i]=(cluster.clusterDist[prev][i] + C_TC[i])/rdist;
+//						distance[i]=(cluster.clusterDist[prev][i] + C_TC[i])/rdist;
+						distance[i]=(cluster.clusterDist[prev][i] + C_TC[i]);
 					//System.out.println(distance[i]);
 				}
 			}
@@ -2272,8 +2277,8 @@ public class Main {
 			temp.remove(d);
 		}
 		int id = r.shop.get(r.shop.size()-1).ID;
-		r.distance+= C_Dist[id];
-		r.items=ItemList;
+		r.distance += C_Dist[id];
+		r.items = ItemList;
 
 		return r;
 	}
@@ -2660,13 +2665,13 @@ public class Main {
 
 
 
-		Cluster cluster2 = new Cluster();										// Parent cluster
-		cluster2.memberPois = pois;												// All POIs under parent cluster
-		//cluster.createCluster3(pois, sp, 4);										// Creates the full hierarchical cluster
-		cluster2.baseCluster(pois, sp, 4);
-		cluster2.setAvg(items.size());											// Sets average costs per product in the clusters
-		cluster2.setMin(items.size());											// Sets minimum costs per product in the clusters
-		cluster2.setClusterDist(sp);												// Calculated minimum distances among clusters
+//		Cluster cluster2 = new Cluster();										// Parent cluster
+//		cluster2.memberPois = pois;												// All POIs under parent cluster
+//		//cluster.createCluster3(pois, sp, 4);										// Creates the full hierarchical cluster
+//		cluster2.baseCluster(pois, sp, 4);
+//		cluster2.setAvg(items.size());											// Sets average costs per product in the clusters
+//		cluster2.setMin(items.size());											// Sets minimum costs per product in the clusters
+//		cluster2.setClusterDist(sp);												// Calculated minimum distances among clusters
 
 		endTime1   = System.currentTimeMillis();
 		totalTime1 = endTime1 - startTime1;
