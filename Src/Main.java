@@ -2509,18 +2509,30 @@ public class Main {
 
 	public static void pickPoi(ArrayList<POI> pois, int N)
 	{
-		int count =0;
+//		int count =0;
 		ArrayList<POI> nPois = new ArrayList<POI>();
-		while(count<N)
+//		while(count<N)
+		// N is 25
+		for(int i = 0; i < 50; i+=2)
 		{
-			Random rand = new Random();
-			int rand_int1 = rand.nextInt(pois.size());
-			POI poi = pois.get(rand_int1);
+//			Random rand = new Random();
+//			int rand_int1 = rand.nextInt(pois.size());
+//			POI poi = pois.get(rand_int1);
+			POI poi;
+			// this special condition because POI at index 1 and 8 have the same lat and lng
+			// meaning they're the same store
+			if(i != 8){
+				poi = pois.get(i);
+			}else{
+				poi = pois.get(i+1);
+			}
+
 			if(!nPois.contains(poi))
 			{
 				nPois.add(poi);
+				System.out.println(poi.ID + " " + poi.latitude + " " + poi.longitude);
 				//System.out.println("Picked: "+ poi.ID);
-				count++;
+//				count++;
 			}
 		}
 
