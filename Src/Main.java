@@ -467,10 +467,11 @@ public class Main {
 		try (BufferedReader br = new BufferedReader(new FileReader(name))) {
 
 			String line;
-
 			while ((line = br.readLine()) != null) {
+				line = line.replaceAll("\r", "");
+				String[] splited = line.split("\\s+"); // split based on white spaces
+//				System.out.println(splited[0]);
 
-				String[] splited = line.split("\\s+");							// split based on white spaces
 				for (int j=0;j<len;j++)
 				{
 					sp[i][j]= Double.parseDouble(splited[j]);
@@ -2513,24 +2514,25 @@ public class Main {
 		ArrayList<POI> nPois = new ArrayList<POI>();
 //		while(count<N)
 		// N is 25
-		for(int i = 0; i < 50; i+=2)
+		for(int i = 0; i < 50; i++)
 		{
 //			Random rand = new Random();
 //			int rand_int1 = rand.nextInt(pois.size());
 //			POI poi = pois.get(rand_int1);
-			POI poi;
-			// this special condition because POI at index 1 and 8 have the same lat and lng
-			// meaning they're the same store
-			if(i != 8){
-				poi = pois.get(i);
-			}else{
-				poi = pois.get(i+1);
-			}
+			POI poi = pois.get(i);
+			System.out.println(poi.ID + " " + poi.latitude + " " + poi.longitude);
+
+//			// this special condition because POI at index 1 and 8 have the same lat and lng
+//			// meaning they're the same store
+//			if(i != 8){
+//				poi = pois.get(i);
+//			}else{
+//				poi = pois.get(i+1);
+//			}
 
 			if(!nPois.contains(poi))
 			{
 				nPois.add(poi);
-				System.out.println(poi.ID + " " + poi.latitude + " " + poi.longitude);
 				//System.out.println("Picked: "+ poi.ID);
 //				count++;
 			}
@@ -2651,6 +2653,7 @@ public class Main {
 
 
 		maxd = readSP (sp, pois.size(), "./datasets/Amsterdam/poi/originals/ShortestPathPoi50.txt", maxd);												// Calculated the shortest paths
+//		maxd = readSP (sp, pois.size(), "./generateSP/test.txt", maxd);												// Calculated the shortest paths
 		//System.out.println(maxd);
 		//Neighbor_Gen(pois, sp, );
 //		int cn=0;
