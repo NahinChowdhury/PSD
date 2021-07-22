@@ -2880,21 +2880,21 @@ public class Main {
 
 			startTime = System.currentTimeMillis();
 
-			Neighbor_Gen(pois, sp, C_Dist);
+			Neighbor_Gen(pois, sp, C_Dist); // Nahin: no idea why this is here
 
 
-			ArrayList<Route> B = new ArrayList<Route>();			// The routes
-			//B = GetBaseRoutes(cluster2, ItemList, pois, wareTC, sp, wareDist, C_Dist, items);
-
-			endTime   = System.currentTimeMillis();
-			totaltimeB+= endTime - startTime+comT;
+//			ArrayList<Route> B = new ArrayList<Route>();			// The routes
+//			//B = GetBaseRoutes(cluster2, ItemList, pois, wareTC, sp, wareDist, C_Dist, items);
+//
+//			endTime   = System.currentTimeMillis();
+//			totaltimeB+= endTime - startTime+comT;
 
 
 //			System.out.println("\n\n");
 
 			//check_sequence(B);
 			//Collections.sort(B, new Comp());
-			Collections.sort(Q, new Comp());
+//			Collections.sort(Q, new Comp());
 
 
 //		double AR = checkArea3(Q,B, cover);
