@@ -464,13 +464,14 @@ public class Main {
 		//"./datasets/Amsterdam/poi/originals/ShortestPathPoi.txt"
 		// = 0;
 		int i=0;
+//		int i=50;
 		try (BufferedReader br = new BufferedReader(new FileReader(name))) {
 
 			String line;
 			while ((line = br.readLine()) != null) {
-				line = line.replaceAll("\r", "");
+//				line = line.replaceAll("\r", "");
 				String[] splited = line.split("\\s+"); // split based on white spaces
-//				System.out.println(splited[0]);
+//				System.out.println(splited[49]);
 
 				for (int j=0;j<len;j++)
 				{
@@ -491,7 +492,7 @@ public class Main {
 		for (int k=0;k<i;k++)
 
 		{
-			for (int j=0; j<len;j++)
+			for (int j=0; j<i;j++)
 				//sp[k][j] = Math.round((sp[k][j]/maxd) * 100.0) / 100.0;;
 //				sp[k][j] = precision(sp[k][j]/maxd);
 				sp[k][j] = precision(sp[k][j]);
@@ -2151,7 +2152,7 @@ public class Main {
 
 					for(int j=0;j<ItemList.size();j++)
 					{
-						cost[i]+=cluster.memberClusters.get(i).avgcost[ItemList.get(j)];
+						cost[i]+=cluster.memberClusters.get(i).avgcost[ItemList.get(j)]; // if an item is found in itemList, add that item to cost
 						if(cluster.memberClusters.get(i).avgcost[ItemList.get(j)]!=0)count[i]++;
 						//cost[i]+=cluster.memberClusters.get(i).mincost[ItemList.get(j)];
 						//if(cluster.memberClusters.get(i).mincost[ItemList.get(j)]!=0)count[i]++;
@@ -2169,7 +2170,7 @@ public class Main {
 			prev=-1;
 			for (int i=0; i<cluster.memberClusters.size();i++)
 			{
-				if(count[i]>0) {
+				if(count[i]>0) { // if the items are found in each cluster
 					if (prev==-1 && cost[i]>0)
 						prev =i;
 					else {
@@ -2514,28 +2515,24 @@ public class Main {
 		ArrayList<POI> nPois = new ArrayList<POI>();
 //		while(count<N)
 		// N is 25
-		for(int i = 0; i < 50; i++)
+		for(int i = 0; i < 51; i++)
 		{
 //			Random rand = new Random();
 //			int rand_int1 = rand.nextInt(pois.size());
 //			POI poi = pois.get(rand_int1);
 			POI poi = pois.get(i);
-			System.out.println(poi.ID + " " + poi.latitude + " " + poi.longitude);
+//			System.out.println(poi.ID + " " + poi.latitude + " " + poi.longitude);
 
-//			// this special condition because POI at index 1 and 8 have the same lat and lng
-//			// meaning they're the same store
-//			if(i != 8){
-//				poi = pois.get(i);
-//			}else{
-//				poi = pois.get(i+1);
-//			}
+			if(i % 2 == 1){
 
-			if(!nPois.contains(poi))
-			{
-				nPois.add(poi);
-				//System.out.println("Picked: "+ poi.ID);
+				if(!nPois.contains(poi))
+				{
+					nPois.add(poi);
+					//System.out.println("Picked: "+ poi.ID);
 //				count++;
+				}
 			}
+
 		}
 
 		for(int i=0;i<pois.size();i++)
@@ -2652,9 +2649,9 @@ public class Main {
 		//System.out.println("Time: "+totalTime1);
 
 
-		maxd = readSP (sp, pois.size(), "./datasets/Amsterdam/poi/originals/ShortestPathPoi50.txt", maxd);												// Calculated the shortest paths
-//		maxd = readSP (sp, pois.size(), "./generateSP/test.txt", maxd);												// Calculated the shortest paths
-		//System.out.println(maxd);
+//		maxd = readSP (sp, pois.size(), "./datasets/Amsterdam/poi/originals/ShortestPathPoi50.txt", maxd);												// Calculated the shortest paths
+		maxd = readSP (sp, pois.size(), "./generateSP/test.txt", maxd);												// Calculated the shortest paths
+//		System.out.println(maxd);
 		//Neighbor_Gen(pois, sp, );
 //		int cn=0;
 
@@ -2729,8 +2726,8 @@ public class Main {
 //			System.out.println("{\"customer_location\": {\"lat\": \"" + node2.getAttribute("lat") + "\", \"lng\": \"" + node2.getAttribute("long") + "\"}}");
 
 
-			// Node node = graph.getNode("6900");
-			// Node node2 = graph.getNode("15900");
+			// Node node = graph.getNode("6900"); // shopper's location
+			// Node node2 = graph.getNode("15900"); // customer's location
 
 			long startTP = System.currentTimeMillis();	// Start timer
 
