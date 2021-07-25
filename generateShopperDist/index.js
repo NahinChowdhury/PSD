@@ -13,11 +13,15 @@ async function init(){
     // in the end, after a 40sec wait, we write the new values into our file.
 
     const poiInfo = await readPOIInfo();
+    const shopperInfo = await readShopperInfo();
     const datasetInfo = await readCurrentDataset();
+    console.log("Shopper info here")
+    console.log(shopperInfo);
 
     let popCounter = 0;
     for(let line of datasetInfo){
-        if(line.length === 1){
+        // console.log(line.length)
+        if(line.length === 0){
             popCounter++;
             console.log("This line is blank")
         }
@@ -39,13 +43,11 @@ async function init(){
 
     // let count = 0;
     for(let i = 0; i < len; i++) {
-        for(let j = 0; j < len; j++){
             // count++;
-            // await fetchDuration(poiInfo[i][1], poiInfo[i][2], poiInfo[j][1], poiInfo[j][2], datasetInfo, i, j);
+            // await fetchDuration(shopperInfo[0], shopperInfo[1], poiInfo[i][1], poiInfo[i][2], datasetInfo, i);
 
             // console.log(`startLat: ${poiInfo[i][1]}, startLng: ${poiInfo[i][2]}, endLat: ${poiInfo[j][1]}, endLng: ${poiInfo[j][2]}`)
             // console.log(`arr[${i}][${j}]`);
-        }
     }
     // console.log(count);
 
@@ -53,14 +55,14 @@ async function init(){
     setTimeout(() =>{
         // console.log(datasetInfo);
 
-        // const file = fs.createWriteStream('test.txt'); // algorithm reads from test.txt
-        const file = fs.createWriteStream('test2.txt'); // test2 is for debugging
+        const file = fs.createWriteStream('test.txt'); // algorithm reads from test.txt
+        // const file = fs.createWriteStream('test2.txt'); // test2 is for debugging
         file.on('error', function(err) { /* error handling */ });
         datasetInfo.forEach(function(v) {
-             file.write(v.join(' ') + '\n'); 
+             file.write(v + '\n'); 
         });
         file.end();
-    }, 40*1000)
+    }, 05*1000)
 
     // console.log("after fetch")
 
@@ -76,20 +78,33 @@ async function init(){
         return poiInfo;
     }
 
-    async function readCurrentDataset(){
-        // const datasetFile = fs.readFileSync("./test.txt").toString('utf-8');
-        const datasetFile = fs.readFileSync("./test2.txt").toString('utf-8');
-        const datasetLines = datasetFile.split("\n"); // may need to remove \r as well
+    async function readShopperInfo(){
+        const shopperFile = fs.readFileSync("../datasets/shopperLocation/shopperLocation.txt").toString('utf-8');
+        const shopperLines = shopperFile.split(" ");
     
-        const datasetInfo = [];
-        for(let line of datasetLines) {
-            datasetInfo.push(line.split(" "))
-        }
+        // const shopperInfo = [];
+        // for(let line of shopperLines) {
+        //     shopperInfo.push(line.split(" "))
+        // }
 
-        return datasetInfo;
+        return shopperLines;
     }
 
-    async function fetchDuration(startLat, startLng, endLat, endLng, arr, i, j){
+    async function readCurrentDataset(){
+        // const datasetFile = fs.readFileSync("./test.txt").toString('utf-8');
+        const datasetFile = fs.readFileSync("./test.txt").toString('utf-8');
+        const datasetLines = datasetFile.split("\n"); // may need to remove \r as well
+    
+        // const datasetInfo = [];
+        // for(let line of datasetLines) {
+        //     datasetInfo.push(line.split(" "))
+        // }
+
+        // return datasetInfo;
+        return datasetLines;
+    }
+
+    async function fetchDuration(startLat, startLng, endLat, endLng, arr, i){
 
             // console.log(`startLat: ${startLat}, startLng: ${startLng}, endLat: ${endLat}, endLng: ${endLng}`)
             
@@ -98,7 +113,7 @@ async function init(){
             .then(response =>{
                 // console.log(response.status)
                 if(response.status != 200){
-                    throw new Error(`Error at arr[${i}][${j}]`);
+                    throw new Error(`Error at arr[${i}]`);
                 }else{
                     return response.json()
                 }
@@ -110,11 +125,11 @@ async function init(){
                 // console.log(arr[i][j])
                 // console.log("ok")
                 
-                arr[i][j] = data.rows[0].elements[0].duration_in_traffic.value;
+                arr[i] = data.rows[0].elements[0].duration_in_traffic.value;
             })
             // .then(resolve())
             .catch(error =>{
-                console.log(`Error:arr[${i}][${j}]`)
+                console.log(`Error:arr[${i}]`)
                 console.log(error);
             })
     }

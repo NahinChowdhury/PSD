@@ -501,6 +501,34 @@ public class Main {
 	}
 
 
+	public static void readPersonLocation(double [] distArr, String name)
+	{
+		//"./datasets/Amsterdam/poi/originals/ShortestPathPoi.txt"
+		// = 0;
+		int i=0;
+//		int i=50;
+		try (BufferedReader br = new BufferedReader(new FileReader(name))) {
+
+			String line;
+			while ((line = br.readLine()) != null) {
+				if(line.isEmpty()){
+//					System.out.println("Empty line");
+					continue;
+				}
+//				line = line.replaceAll("\r", "");
+//				String[] splited = line.split("\\s+"); // split based on white spaces
+//				System.out.println(splited[49]);
+
+//				System.out.println("i: " + i + ", line: " + line);
+				distArr[i] = Double.parseDouble(line);
+				i++;
+
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 
 	public static void ReadPermutes(ArrayList<ArrayList<int []>> permutes, int len)
@@ -2637,6 +2665,18 @@ public class Main {
 
 		sortItems(pois, items, "./datasets/Amsterdam/poi/originals/Item_Cost/StoresPerItemAMS_Cost_INward_Sorted.txt", 50, maxCost);
 
+
+		// Getting appropriate nodes by passing lng and lat
+//		for(int i = 0; i < graph.getNodeCount(); i++){
+//			Node node = graph.getNode(i);
+//			if(node.getAttribute("lat").equals(52.352722) && node.getAttribute("long").equals(4.929118)) {
+//				System.out.println("Customer node: " + i);
+//			}
+//			else if(node.getAttribute("lat").equals(52.34873) && node.getAttribute("long").equals(4.805873)){
+//				System.out.println("Shopper node: " + i);
+//			}
+//		}
+
 		//randomizeItem(pois, items, maxCost);
 		//normalizeItem(pois, items, maxCost);
 
@@ -2709,18 +2749,20 @@ public class Main {
 
 			// set warehouse location
 
-			Random rand = new Random();
-			int rand_int1 = rand.nextInt(100000);
-			String shopper = Integer.toString(rand_int1);
+//			Random rand = new Random();
+//			int rand_int1 = rand.nextInt(100000);
+//			String shopper = Integer.toString(rand_int1);
 
-			Node node = graph.getNode(shopper);
+//			Node node = graph.getNode(shopper);
+			Node node = graph.getNode(8020);
 //			System.out.println("\nShopper's location: lat: " + node.getAttribute("lat") + " lng: " + node.getAttribute("long"));
 			shopper_loc = "{\"shopper_location\":{ \"lat\": " + node.getAttribute("lat") + ", \"lng\": " + node.getAttribute("long") + "}},";
 //			System.out.println("{\"shopper_location\":{ \"lat\": " + node.getAttribute("lat") + ", \"lng\": " + node.getAttribute("long") + "}}");
 
-			rand_int1 = rand.nextInt(100000);
-			shopper = Integer.toString(rand_int1);
-			Node node2 = graph.getNode(shopper);
+//			rand_int1 = rand.nextInt(100000);
+//			shopper = Integer.toString(rand_int1);
+//			Node node2 = graph.getNode(shopper);
+			Node node2 = graph.getNode(88896);
 
 			customer_loc = "{\"customer_location\": {\"lat\": \"" + node2.getAttribute("lat") + "\", \"lng\": \"" + node2.getAttribute("long") + "\"}},";
 //			System.out.println("{\"customer_location\": {\"lat\": \"" + node2.getAttribute("lat") + "\", \"lng\": \"" + node2.getAttribute("long") + "\"}}");
@@ -2732,10 +2774,12 @@ public class Main {
 			long startTP = System.currentTimeMillis();	// Start timer
 
 			double[] wareDist = new double [pois.size()];							// Distance from warehouse
-			GetWareDist(wareDist, graph, pois, node, maxd);								// to POIs
+			readPersonLocation(wareDist, "./generateShopperDist/test.txt");
+//			GetWareDist(wareDist, graph, pois, node, maxd);								// to POIs
 
 			double[] C_Dist = new double [pois.size()];							// Distance from customer location
-			GetWareDist(C_Dist, graph, pois, node2, maxd);								// to POIs
+			readPersonLocation(C_Dist, "./generateCustomerDist/test.txt");
+//			GetWareDist(C_Dist, graph, pois, node2, maxd);								// to POIs
 
 
 			//change(C_Dist, sp, 0);
