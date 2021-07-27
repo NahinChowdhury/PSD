@@ -1225,6 +1225,11 @@ public class Main {
 								route.ndistance = sp[route.shop.get(route.shop.size()-1).ID][pois.get(i).ID];
 								route.items.add(ItemList.get(j));
 
+								IS_Pair iPair = new IS_Pair();    // nahin uncommented from here
+								iPair.item_id = ItemList.get(j);
+								iPair.shop_id = pois.get(i).ID;
+								iPair.cost = pois.get(i).items[ItemList.get(j)];
+								route.items_sh.add(iPair);     // nahin uncommented till here
 							}
 
 						}
@@ -1266,6 +1271,16 @@ public class Main {
 						{
 							droute.items.remove(i);
 						}
+
+						// remove item_sh of that POI
+						for(int i = 0; i < droute.items_sh.size(); i++){
+							IS_Pair pair = droute.items_sh.get(i);
+							if(pair.shop_id == droute.shop.get(droute.shop.size()-1).ID) {
+								droute.items_sh.remove(pair);
+							}
+//							System.out.println(pair.shop_id);
+						}
+
 						//route.print();
 						//droute.print();
 
@@ -1284,6 +1299,12 @@ public class Main {
 										droute.ncost += pois.get(i).items[ItemList.get(j)];
 										droute.ndistance = sp[droute.shop.get(droute.shop.size()-1).ID][pois.get(i).ID];
 										droute.items.add(ItemList.get(j));
+
+										IS_Pair iPair = new IS_Pair();    // nahin uncommented from here
+										iPair.item_id = ItemList.get(j);
+										iPair.shop_id = pois.get(i).ID;
+										iPair.cost = pois.get(i).items[ItemList.get(j)];
+										droute.items_sh.add(iPair);     // nahin uncommented till here
 
 									}
 
@@ -2146,6 +2167,13 @@ public class Main {
 						//System.out.println("SHOP: " + cluster.memberPois.get(i).ID);
 						pRoute.items.add(ItemList.get(j));
 						pRoute.cost+=cluster.memberPois.get(i).items[ItemList.get(j)];
+
+						IS_Pair iPair = new IS_Pair();    // nahin uncommented from here
+						iPair.item_id = ItemList.get(j);
+						iPair.shop_id = cluster.memberPois.get(i).ID;
+						iPair.cost = cluster.memberPois.get(i).items[ItemList.get(j)];
+						pRoute.items_sh.add(iPair);     // nahin uncommented till here
+
 						//System.out.println(pRoute.cost);
 						shopFlag=1;
 
@@ -2204,7 +2232,9 @@ public class Main {
 					else {
 						//if((cost[i]+distance[i])/count[i]<(cost[prev]+distance[prev])/count[prev])
 						//	{prev=i;}
-						if((( (cost[i]/count[i])/normC + distance[i]) < ( (cost[prev]/count[prev])/normC + distance[prev])) && distance[i]<1.0)
+//						if((( (cost[i]/count[i])/normC + distance[i]) < ( (cost[prev]/count[prev])/normC + distance[prev])) && distance[i]<1.0)
+						if((( (cost[i]/count[i])/normC + distance[i]) < ( (cost[prev]/count[prev])/normC + distance[prev])))
+//						if(count[i] == 0)
 						{prev=i;}
 
 					}
@@ -2245,6 +2275,9 @@ public class Main {
 							route.distance += Result1.get(j).distance;
 							route.items.addAll(Result1.get(j).items);
 							route.shop.addAll(Result1.get(j).shop);
+
+							route.items_sh.addAll(Result1.get(j).items_sh);
+
 							route.distance += sp[Result.get(i).shop.get(Result.get(i).shop.size()-1).ID][Result1.get(j).shop.get(0).ID];
 							result2.add(route);
 						}
@@ -2287,6 +2320,16 @@ public class Main {
 				if (temp.size()==1)dist= 0;
 				else if(wareDist[p]<wareDist[temp.get(dist).ID]) dist=temp.size()-1;
 			}
+
+			// technically, for every single item,
+			// we are going to find an appropriate POI for it
+			// so we can have an item_sh in this for loop
+
+			IS_Pair iPair = new IS_Pair();    // nahin uncommented from here
+			iPair.item_id = ItemList.get(i);
+			iPair.shop_id = p;
+			iPair.cost = pois.get(p).items[ItemList.get(i)];
+			r.items_sh.add(iPair);     // nahin uncommented till here
 
 		}
 		//System.out.println(ItemList.size());
@@ -2743,7 +2786,6 @@ public class Main {
 		int N = parseInt(arg[1]);  // Read user input
 		double maxA=0;
 		/////////////////////////////// 100 Experiments /////////////////////////////
-		while(iteration <N) {
 
 
 
@@ -2856,12 +2898,12 @@ public class Main {
 			//ItemList = new ArrayList<Integer>(itemList.subList(0, len));
 			ItemList = itemList;
 			//Route r = GetminR(ItemList, items, sp, wareDist, C_Dist, pois);
-			//r.cost = get_min_cost(r, items, pois);        // nahin commented this
+//			r.cost = get_min_cost(r, items, pois);        // nahin commented this
 			Q.add(r);
 
 			// nahin code starts
 			for(int i = 0; i < Q.size(); i++){
-				Q.get(i).cost = get_min_cost(Q.get(i), items, pois);
+//				Q.get(i).cost = get_min_cost(Q.get(i), items, pois);
 				continue;
 			}
 			// nahin code ends
@@ -3002,8 +3044,6 @@ public class Main {
 
 
 //			System.out.println(Q);
-
-		}
 
 
 //		System.out.println(ItemListFinal);
